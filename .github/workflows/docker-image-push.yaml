@@ -1,0 +1,19 @@
+name: this for the docker image push
+on: 
+    workflow_dispatch:
+jobs: 
+    publish_images:
+        runs-on: ubuntu-latest
+        steps: 
+            - name: Checkout code 
+              uses: actions/checkout@v4
+            
+            - name: Build and docker image
+              run: |
+                docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/my-nginx-image:latest .
+            - name: push image to docker hub
+              run: | 
+                docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_TOKEN}}
+            - name: push image to docker hub 
+              run: | 
+                docker push ${{ secrets.DOCKER_HUB_USERNAME }}/my-nginx-image:latest
